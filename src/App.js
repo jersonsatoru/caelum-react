@@ -3,11 +3,14 @@ import logo from './logo.svg';
 import './App.css';
 
 import Cabecalho from './Cabecalho';
+import Navegacao from './Navegacao';
 
 function App() {
   return (
     <Fragment>
-      <Cabecalho />
+      <Cabecalho>
+        <Navegacao links={["mensagem", "contato", "coisas loucas"]}></Navegacao>
+      </Cabecalho>
       <div className="App">
         <header className="App-header">
           <img src={logo} className="App-logo" alt="logo" />

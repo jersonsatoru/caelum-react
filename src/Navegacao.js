@@ -1,13 +1,14 @@
 import React, { Component }  from 'react';
 
-function Navegacao() {
+function Navegacao(props) {
     return (
         <nav>
             <ul>
-                <li><a href="#">1</a></li>
-                <li><a href="#">2</a></li>
-                <li><a href="#">3</a></li>
-                <li><a href="#">4</a></li>
+                {props.links.map(item => (
+                    <li>
+                        <a href="#">{item}</a>
+                    </li>
+                ))}
             </ul>
         </nav>
     );
