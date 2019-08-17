@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 
+import Navegacao from './Navegacao';
+
 class Cabecalho extends Component {
 
     render(){
@@ -7,14 +9,7 @@ class Cabecalho extends Component {
             <header>
                 <h1>Twitelum</h1>
 
-                <nav>
-                    <ul>
-                        <li><a href="#">1</a></li>
-                        <li><a href="#">2</a></li>
-                        <li><a href="#">3</a></li>
-                        <li><a href="#">4</a></li>
-                    </ul>
-                </nav>
+                <Navegacao />
             </header>
         );
     }
