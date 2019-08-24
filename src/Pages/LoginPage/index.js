@@ -2,9 +2,18 @@ import React, { Component, Fragment } from 'react'
 import Cabecalho from '../../components/Cabecalho'
 import Widget from '../../components/Widget'
 
+import If from '../../components/If'
+
 import './loginPage.css'
 
 class LoginPage extends Component {
+
+    constructor(){
+        super();
+        this.state = {
+            errorMessage: '',
+        };
+    }
 
     handleSubmit = (e) => {
         e.preventDefault();
@@ -13,7 +22,7 @@ class LoginPage extends Component {
         const url = "http://twitelum-api.herokuapp.com/login";
         fetch(url, {
             method: 'POST',
-            body: JSON.stringify({login: login.value, senha: senha.value}),
+            body: JSON.stringify({ login: login.value, senha: senha.value }),
         })
         .then( async (response) => {
             return {
@@ -24,9 +33,10 @@ class LoginPage extends Component {
         .then(body => {
             if (body.success) {
                 localStorage.setItem("token", body.token);
+                this.setState({ errorMessage: '' });
                 this.props.history.push('/');
             } else {
-                alert('PAM!!');
+                this.setState({ errorMessage: body.body.message });
             }
         })
     }
@@ -48,9 +58,11 @@ class LoginPage extends Component {
                                     <label className="loginPage__label" htmlFor="senha">Senha</label> 
                                     <input ref="senha" className="loginPage__input" type="password" id="senha" name="senha"/>
                                 </div>
-                                {/* <div className="loginPage__errorBox">
-                                    Mensagem de erro!
-                                </div> */}
+                                <If cond={this.state.errorMessage}>
+                                    <div className="loginPage__errorBox">
+                                        {this.state.errorMessage}
+                                    </div>
+                                </If>
                                 <div className="loginPage__inputWrap">
                                     <button className="loginPage__btnLogin" type="submit">
                                         Logar
