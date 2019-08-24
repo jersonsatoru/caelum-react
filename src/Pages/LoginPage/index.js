@@ -4,22 +4,24 @@ import Widget from '../../components/Widget'
 
 import If from '../../components/If'
 
+import { NotificacaoProvider } from '../../contexts/notificacao'
+
 import './loginPage.css'
 
 class LoginPage extends Component {
-
+    
     constructor(){
         super();
         this.state = {
-            errorMessage: '',
-        };
+            errorMessage: ''
+        }
     }
 
     handleSubmit = (e) => {
         e.preventDefault();
         const { login, senha } = this.refs;
 
-        const url = "http://twitelum-api.herokuapp.com/login";
+        const url = "https://api-twitelum.herokuapp.com/login";
         fetch(url, {
             method: 'POST',
             body: JSON.stringify({ login: login.value, senha: senha.value }),
@@ -32,8 +34,7 @@ class LoginPage extends Component {
         })
         .then(body => {
             if (body.success) {
-                localStorage.setItem("token", body.token);
-                this.setState({ errorMessage: '' });
+                localStorage.setItem("token", body.body.token);
                 this.props.history.push('/');
             } else {
                 this.setState({ errorMessage: body.body.message });
