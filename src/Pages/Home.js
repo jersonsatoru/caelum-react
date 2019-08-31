@@ -14,6 +14,8 @@ class Home extends Component {
     state = {
         novoTweet: '',
         listaTweet: [],
+        modalIsOpen: false,
+        tweetSelecionado: null,
     }
 
     novoTweetEstaValido() {
@@ -50,8 +52,27 @@ class Home extends Component {
         });
     }
 
+    onHandleModal = () => {
+        this.setState({
+            modalIsOpen: !this.state.modalIsOpen
+        })
+    }
+
+    onSelectTweet = (tweetID) => {
+        const tweetSelecionado = this.state.listaTweet
+            .find(item => item._id === tweetID);
+
+        this.setState({
+            tweetSelecionado
+        });
+    }
+
+    onCloseModal = () => {
+        
+    }
+
     render() {
-        const { listaTweet, novoTweet } = this.state;
+        const { listaTweet, novoTweet, tweetSelecionado, modalIsOpen } = this.state;
         return (
             <Fragment>
                 <Cabecalho>
@@ -100,6 +121,8 @@ class Home extends Component {
                                             login={item.usuario.login}
                                             removivel={item.removivel}
                                             onHandleExcluirTweet={this.onHandleExcluirTweet}
+                                            onHandleModal={this.onHandleModal}
+                                            onSelectTweet={this.onSelectTweet}
                                             totalLikes={item.totalLikes}>
                                         {item.conteudo}
                                     </Tweet>
@@ -108,7 +131,22 @@ class Home extends Component {
                         </Widget>
                     </Dashboard>
                 </div>
-                <Modal />
+                <Modal 
+                    modalIsOpen={modalIsOpen} 
+                    tweetSelecionado={tweetSelecionado}
+                    onClose={onCloseModal}>
+
+                    {tweetSelecionado && (<Tweet 
+                        id={tweetSelecionado._id}
+                        avatar={tweetSelecionado.usuario.foto} 
+                        userName={tweetSelecionado.usuario.nome}
+                        likeado={tweetSelecionado.likeado} 
+                        login={tweetSelecionado.usuario.login}
+                        removivel={tweetSelecionado.removivel}
+                        totalLikes={tweetSelecionado.totalLikes}>
+                        {tweetSelecionado.conteudo}
+                    </Tweet>)}
+                </Modal>
             </Fragment>
         );
     }

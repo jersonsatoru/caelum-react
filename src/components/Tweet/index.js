@@ -35,17 +35,26 @@ class Tweet extends Component {
         });
     }
  
+    handleSelect = (event) => {
+        const clickouNoFooter = event.target.closest('.tweet__footer')
+        const { id, onSelectTweet } = this.props;
+
+        if (onSelectTweet && !clickouNoFooter){
+            onSelectTweet(id);
+        }
+    }
+
     render() {
-        const { avatar, userName, children, login, removivel } = this.props;
+        const { avatar, userName, children, login, removivel, onHandleModal } = this.props;
         const { likeado, totalLikes } = this.state; 
         return (
-            <article className="tweet">
+            <article className="tweet" onClick={this.handleSelect}>
                 <div className="tweet__cabecalho">
                     <img className="tweet__fotoUsuario" src={avatar} alt="" />
                     <span className="tweet__nomeUsuario">{userName}o</span>
                     <a href="/"><span className="tweet__userName">@{login}</span></a>
                 </div>
-                <p className="tweet__conteudo">
+                <p className="tweet__conteudo" onClick={onHandleModal}>
                     {children}
                 </p>
                 <footer className="tweet__footer">
