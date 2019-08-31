@@ -6,6 +6,8 @@ import Widget from '../components/Widget'
 import TrendsArea from '../components/TrendsArea'
 import Tweet from '../components/Tweet'
 
+import * as TweetServices from '../services/tweets';
+
 class Home extends Component {
 
     state = {
@@ -18,29 +20,25 @@ class Home extends Component {
         return novoTweetLength > 0 && novoTweetLength <= 140;
     }
 
+    componentDidMount() {
+        TweetServices.listaTweets()
+        .then(({ body }) => {
+           this.setState({
+               listaTweet: body
+           }) 
+        });
+    }
+
     handleCriaTweet = (event) => {
         event.preventDefault();
-
-        const url = `https://api-twitelum.herokuapp.com/tweets?X-AUTH-TOKEN=${localStorage.getItem('token')}`;
-        fetch(url, {
-            method: "POST",
-            body: JSON.stringify({
-                conteudo: this.state.novoTweet
+        TweetServices.criaTweet(this.state.novoTweet)
+            .then(({ body }) => {
+                this.setState({
+                    novoTweet: '',
+                    listaTweet: [body, ...this.state.listaTweet]
+                });
             })
-        })
-        .then(async (response) => {
-            return {
-                success: response.ok,
-                body: await response.json()
-            }
-        })
-        .then(body => {
-            console.log(body);
-            this.setState({
-                novoTweet: '',
-                listaTweet: [body, ...this.state.listaTweet]
-            });
-        });
+        
     }
 
     render() {

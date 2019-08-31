@@ -4,12 +4,15 @@ import Widget from '../../components/Widget'
 
 import If from '../../components/If'
 
-import { NotificacaoProvider } from '../../contexts/notificacao'
+import { NotificacaoContext } from '../../contexts/notificacao'
+import * as LoginService from '../../services/login';
 
 import './loginPage.css'
 
 class LoginPage extends Component {
     
+    static contextType = NotificacaoContext;
+
     constructor(){
         super();
         this.state = {
@@ -19,27 +22,16 @@ class LoginPage extends Component {
 
     handleSubmit = (e) => {
         e.preventDefault();
-        const { login, senha } = this.refs;
-
-        const url = "https://api-twitelum.herokuapp.com/login";
-        fetch(url, {
-            method: 'POST',
-            body: JSON.stringify({ login: login.value, senha: senha.value }),
-        })
-        .then( async (response) => {
-            return {
-                success: response.ok,
-                body: await response.json()
-            }
-        })
-        .then(body => {
-            if (body.success) {
-                localStorage.setItem("token", body.body.token);
-                this.props.history.push('/');
-            } else {
-                this.setState({ errorMessage: body.body.message });
-            }
-        })
+        LoginService.logar(this.refs)
+            .then(({ body, success }) => {
+                if (success) {
+                    localStorage.setItem("token", body.token);
+                    this.context.setMensagem('Login efetuado com sucesso! Bem vindo!');
+                    this.props.history.push('/');
+                } else {
+                    this.setState({ errorMessage: body.message });
+                }
+            });
     }
 
     render() {
