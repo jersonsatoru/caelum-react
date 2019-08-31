@@ -1,10 +1,20 @@
 import React, { Component } from 'react'
 import './tweet.css'
+import PropTypes from 'prop-types'
 
 import * as TweetServices from '../../services/tweets'
 import { NotificacaoContext } from '../../contexts/notificacao'
 
 class Tweet extends Component {
+
+    static propTypes = {
+        avatar: PropTypes.string.isRequired,
+        userName: PropTypes.string.isRequired,
+        children: PropTypes.node.isRequired, 
+        login: PropTypes.string.isRequired, 
+        removivel: PropTypes.bool.isRequired, 
+        onHandleModal: PropTypes.func.isRequired,
+    }
 
     state = {
         likeado: this.props.likeado,

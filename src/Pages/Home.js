@@ -68,7 +68,9 @@ class Home extends Component {
     }
 
     onCloseModal = () => {
-        
+        this.setState({
+            modalIsOpen: false,
+        })
     }
 
     render() {
@@ -122,6 +124,7 @@ class Home extends Component {
                                             removivel={item.removivel}
                                             onHandleExcluirTweet={this.onHandleExcluirTweet}
                                             onHandleModal={this.onHandleModal}
+                                            onCloseModal={this.onCloseModal}
                                             onSelectTweet={this.onSelectTweet}
                                             totalLikes={item.totalLikes}>
                                         {item.conteudo}
@@ -134,7 +137,7 @@ class Home extends Component {
                 <Modal 
                     modalIsOpen={modalIsOpen} 
                     tweetSelecionado={tweetSelecionado}
-                    onClose={onCloseModal}>
+                    >
 
                     {tweetSelecionado && (<Tweet 
                         id={tweetSelecionado._id}
