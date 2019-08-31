@@ -83,9 +83,14 @@ class Home extends Component {
                         <Widget>
                             <div className="tweetsArea">
                                 {listaTweet.length > 0 ? listaTweet.map( (item, index) => (
-                                    <Tweet key={index} avatar={item.foto} 
-                                            userName="Jerson" 
-                                            likes="3">
+                                    <Tweet key={index} 
+                                            id={item._id}
+                                            avatar={item.usuario.foto} 
+                                            userName={item.usuario.nome}
+                                            likeado={item.removivel} 
+                                            login={item.usuario.login}
+                                            removivel={item.removivel}
+                                            totalLikes={item.totalLikes}>
                                         {item.conteudo}
                                     </Tweet>
                                 )) : "Digite seu primeiro tweet"}    
