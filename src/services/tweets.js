@@ -1,7 +1,7 @@
-const baseURL = `https://api-twitelum.herokuapp.com`;
+import config from '../config'
 
 export function criaTweet(novoTweet){
-    const url = `${baseURL}/tweets?X-AUTH-TOKEN=${localStorage.getItem('token')}`;
+    const url = `${config.baseURL}/tweets?X-AUTH-TOKEN=${localStorage.getItem('token')}`;
     return fetch(url, {
         method: "POST",
         body: JSON.stringify({
@@ -17,7 +17,7 @@ export function criaTweet(novoTweet){
 }
 
 export function listaTweets() {
-    const url = `${baseURL}/tweets`;
+    const url = `${config.baseURL}/tweets?X-AUTH-TOKEN=${localStorage.getItem('token')}`;
     return fetch(url)
     .then(async (response) => {
         return {
@@ -28,7 +28,7 @@ export function listaTweets() {
 }
 
 export function curtiTweet({ token, tweetID }){
-    const url = `${baseURL}/tweets/${tweetID}/like?X-AUTH-TOKEN=${localStorage.getItem('token')}`;
+    const url = `${config.baseURL}/tweets/${tweetID}/like?X-AUTH-TOKEN=${localStorage.getItem('token')}`;
     return fetch(url, {
         method: "POST",
     })
@@ -37,6 +37,18 @@ export function curtiTweet({ token, tweetID }){
         return {
             body: response.json(),
             success: response.ok
+        }
+    });
+}
+
+export function excluirTweet(tweetID) {
+    const url = `${config.baseURL}/tweets/${tweetID}?X-AUTH-TOKEN=${localStorage.getItem('token')}`
+    return fetch(url, {
+        method: "DELETE",
+    }).then(response => {
+        return {
+            body: response.json(),
+            success: response.ok,
         }
     });
 }

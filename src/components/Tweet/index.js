@@ -19,14 +19,22 @@ class Tweet extends Component {
             token: localStorage.getItem('token'),
             tweetID: this.props.id,
         }).then((response) => {
+            console.log(response);
             this.setState({
                 likeado: !likeado,
                 totalLikes: totalLikes + (likeado ? -1 : 1) 
             });
-            this.context.setMessage('Tweet curtido!');
+            // this.context.setMessage('Tweet curtido!');
         });
     }
-    
+
+    onHandleExcluirTweet = () => {
+        TweetServices.excluirTweet(this.props.id)
+        .then(({ body, success }) => {
+            this.props.onHandleExcluirTweet(this.props.id);
+        });
+    }
+ 
     render() {
         const { avatar, userName, children, login, removivel } = this.props;
         const { likeado, totalLikes } = this.state; 
@@ -54,7 +62,7 @@ class Tweet extends Component {
                         </svg>
                         {totalLikes}
                     </button>
-                    {!removivel && <button className="btn btn--blue btn--remove">
+                    {removivel && <button className="btn btn--blue btn--remove" onClick={this.onHandleExcluirTweet}>
                         X
                     </button>}
                 </footer>

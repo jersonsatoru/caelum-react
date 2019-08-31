@@ -5,6 +5,7 @@ import Dashboard from '../components/Dashboard'
 import Widget from '../components/Widget'
 import TrendsArea from '../components/TrendsArea'
 import Tweet from '../components/Tweet'
+import Modal from '../components/Modal'
 
 import * as TweetServices from '../services/tweets';
 
@@ -39,6 +40,14 @@ class Home extends Component {
                 });
             })
         
+    }
+
+    onHandleExcluirTweet = (tweetID) => {
+        this.setState({
+            listaTweet: this.state.listaTweet.filter(item => {
+                return item._id !== tweetID;
+            })
+        });
     }
 
     render() {
@@ -87,9 +96,10 @@ class Home extends Component {
                                             id={item._id}
                                             avatar={item.usuario.foto} 
                                             userName={item.usuario.nome}
-                                            likeado={item.removivel} 
+                                            likeado={item.likeado} 
                                             login={item.usuario.login}
                                             removivel={item.removivel}
+                                            onHandleExcluirTweet={this.onHandleExcluirTweet}
                                             totalLikes={item.totalLikes}>
                                         {item.conteudo}
                                     </Tweet>
@@ -98,6 +108,7 @@ class Home extends Component {
                         </Widget>
                     </Dashboard>
                 </div>
+                <Modal />
             </Fragment>
         );
     }
