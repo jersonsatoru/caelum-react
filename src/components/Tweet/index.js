@@ -12,7 +12,7 @@ class Tweet extends Component {
         userName: PropTypes.string.isRequired,
         children: PropTypes.node.isRequired, 
         login: PropTypes.string.isRequired, 
-        removivel: PropTypes.bool.isRequired, 
+        removivel: PropTypes.bool, 
         onHandleModal: PropTypes.func.isRequired,
     }
 

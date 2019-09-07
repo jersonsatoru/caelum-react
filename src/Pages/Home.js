@@ -8,14 +8,15 @@ import Tweet from '../components/Tweet'
 import Modal from '../components/Modal'
 
 import * as TweetServices from '../services/tweets';
+import * as TweetActions from '../actions/tweets';
+import { connect } from 'react-redux'
 
 class Home extends Component {
 
     state = {
-        novoTweet: '',
-        listaTweet: [],
         modalIsOpen: false,
         tweetSelecionado: null,
+        novoTweet: ''
     }
 
     novoTweetEstaValido() {
@@ -24,22 +25,20 @@ class Home extends Component {
     }
 
     componentDidMount() {
-        TweetServices.listaTweets()
-        .then(({ body }) => {
-           this.setState({
-               listaTweet: body
-           }) 
-        });
+        this.props.dispatch(TweetActions.listaTweets());
     }
 
     handleCriaTweet = (event) => {
         event.preventDefault();
         TweetServices.criaTweet(this.state.novoTweet)
             .then(({ body }) => {
-                this.setState({
-                    novoTweet: '',
-                    listaTweet: [body, ...this.state.listaTweet]
+
+                this.setState({ novoTweet: '' });
+                this.props.dispatch({
+                    type: "tweets/criaTweet",
+                    novoTweet: body,
                 });
+
             })
         
     }
@@ -74,7 +73,8 @@ class Home extends Component {
     }
 
     render() {
-        const { listaTweet, novoTweet, tweetSelecionado, modalIsOpen } = this.state;
+        const { novoTweet, tweetSelecionado, modalIsOpen } = this.state;
+        const { listaDaStore } = this.props;
         return (
             <Fragment>
                 <Cabecalho>
@@ -114,7 +114,7 @@ class Home extends Component {
                     <Dashboard posicao="centro">
                         <Widget>
                             <div className="tweetsArea">
-                                {listaTweet.length > 0 ? listaTweet.map( (item, index) => (
+                                {listaDaStore.length > 0 ? listaDaStore.map( (item, index) => (
                                     <Tweet key={index} 
                                             id={item._id}
                                             avatar={item.usuario.foto} 
@@ -155,4 +155,6 @@ class Home extends Component {
     }
 }
 
-export default Home;
+export default connect((store) => ({
+    listaDaStore: store.lista,  
+}))(Home);
